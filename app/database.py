@@ -1,18 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Datos de conexión
-USUARIO = "root"
-PASSWORD = "Micasita123!"
-HOST = "localhost"
-PUERTO = "3306"
-BASE_DATOS = "inventario_telecom"
+# Cambiamos a SQLite para que funcione directamente en la nube sin configuraciones extra
+DATABASE_URL = "sqlite:///./inventario_telecom.db"
 
-DATABASE_URL = (
-    f"mysql+pymysql://{USUARIO}:{PASSWORD}@{HOST}:{PUERTO}/{BASE_DATOS}"
+# engine con configuración especial para SQLite
+engine = create_engine(
+    DATABASE_URL, connect_args={"check_same_thread": False}
 )
-
-engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -21,7 +16,6 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
-
 
 def get_db():
     db = SessionLocal()
